@@ -1,0 +1,75 @@
+<div class="item">
+  <div>Avatar</div>
+  <div>
+    <input 
+      type="url" 
+      name="avatar_url" 
+      placeholder="http://"
+      value="{{student.avatar_url}}"
+      >
+  </div>
+</div>
+
+<div class="item">
+  <div>Nome completo</div>
+  <div>
+    <input 
+      type="text" 
+      name="name" 
+      placeholde="Nome do Aluno(a)"
+      value="{{student.name}}"
+    >
+  </div>
+</div>
+
+<div class="item">
+  <div>Email</div>
+  <div>
+    <input 
+      type="email" 
+      name="email" 
+      placeholde="Email do Aluno(a)"
+      value="{{student.email}}"
+    >
+  </div>
+</div>
+
+<div class="item">
+  <div>Aniversário</div>
+  <div>
+    <input
+      type="date"
+      name="birth"
+      value="{{student.birth}}"
+    >
+  </div>
+</div>
+
+<div class="item">
+  <div>Ano Escolar</div>
+   <select name="yearSchool">
+    <option value="5.ano" {% if student.yearSchool == "5.ano" %} selected {% endif %}>5º Ano Ensino Fundamental</option>
+    <option value="6.ano"{% if student.yearSchool == "6.ano" %} selected {% endif %}>6º Ano Ensino Fundamental</option>
+    <option value="7.ano"{% if student.yearSchool == "7.ano" %} selected {% endif %}>7º Ano Ensino Fundamental</option>
+    <option value="8.ano"{% if student.yearSchool == "8.ano" %} selected {% endif %}>8º Ano Ensino Fundamental</option>
+    <option value="9.ano"{% if student.yearSchool == "9.ano" %} selected {% endif %}>9º Ano Ensino Fundamental</option>
+    <option value="1.medio"{% if student.yearSchool == "1.medio" %} selected {% endif %}>1º Ano Ensino Médio</option>
+    <option value="2.medio"{% if student.yearSchool == "2.medio" %} selected {% endif %}>2º Ano Ensino Médio</option>
+    <option value="3.medio"{% if student.yearSchool == "3.medio" %} selected {% endif %}>3º Ano Ensino Médio</option>
+  </select>
+</div>
+
+<div class="item">
+  <div>Carga horária semanal</div>
+  <div>
+    <input 
+      type="number" 
+      name="workload" 
+      placeholde=""
+      value="{{student.workload}}"
+    >
+  </div>
+</div>
+
+
+<button type="submit">Salvar</button>

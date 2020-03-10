@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        {% block head %}
+            <title>Private Lessons</title>
+        {% endblock %}
+
+        <link rel="stylesheet" href="/styles.css">
+    </head>
+    
+    <body>
+        <header>
+        <section class="details-header">
+            <div class="links">
+                <a href="/teachers">Teachers</a>
+                <a href="/students">Students</a>
+            </div>
+        </section>
+        </header>
+        {% block content %}{% endblock %}
+
+    </body>
+
+    <footer class="footer"> Private Lessons - Feito por <a href="https://www.linkedin.com/in/miguelslima1986/">Miguel Lima</a></footer>
+
+    <script src="/scripts.js"></script>
+</html>
