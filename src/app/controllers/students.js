@@ -1,4 +1,4 @@
-const { age, date, yearSchool} = require('../../lib');
+const { age, date, yearSchool} = require('../../lib/utils');
 
 module.exports = {
   index(req, res) {
