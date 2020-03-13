@@ -57,27 +57,15 @@ module.exports = {
       if(req.body[key] == ""){
         return res.send('Pleaser, fill all fields');
       }
-
-      Teacher.update(req.body, function(){
-        return res.redirect(`/teachers/${req.body.id}`);
-      })
     }
+
+    Teacher.update(req.body, function(){
+      return res.redirect(`/teachers/${req.body.id}`);
+    })
   },
   delete(req, res) {
-    const { id } = req.body;
-
-    const filteredTeachers = data.teachers.filter(function(teacher){
-      return teacher.id != id;
-    })
-  
-    data.teachers = filteredTeachers;
-  
-    fs.writeFile("data.json", JSON.stringify(data, null, 2), function(err) {
-      if(err) {
-        return res.send('Write file error!');
-      }
-  
-      return res.redirect(`/teachers`);
+    Teacher.delete(req.body.id, function() {
+      return res.redirect(`/teachers`)
     })
   },
 }
