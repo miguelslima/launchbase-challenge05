@@ -3,13 +3,17 @@ const db = require('../../config/db');
 
 module.exports = {
   all(callback) {
-    db.query(`
-      SELECT * FROM my_teacher`, function(err, results){
-        if(err) {
-          throw `Database Error! ${err}`;
-        }
-        callback(results.rows);      
-      })
+    db.query(
+      `SELECT my_teacher.*, count(student) AS total_students
+      FROM my_teacher
+      LEFT JOIN student ON (my_teacher.id = student.teacher_id)
+      GROUP BY my_teacher.id
+      ORDER BY total_students ASC`, function(err, results){
+      if(err) {
+        throw `Database Error! ${err}`;
+      }
+      callback(results.rows);      
+    })
   },
   create(data, callback) {
     const query = `
@@ -107,6 +111,45 @@ module.exports = {
       }
 
       return callback();
+    })
+  },
+  paginate(params){
+
+    const { filter, limit, offset, callback } = params;
+
+    let query = "",
+        filterQuery = "",
+        totalQuery = `(
+          SELECT count(*) FROM my_teacher
+        ) AS total`
+
+    if( filter ) {
+
+      filterQuery = `
+      WHERE my_teacher.name ILIKE '%${filter}%'
+      ON my_teacher.subjects_taught ILIKE '%${filter}%'
+      `
+
+      totalQuery = `(
+        SELECT count(*) FROM my_teacher
+        ${filterQuery}
+      ) as total`
+    }
+
+    query = `
+      SELECT my_teacher.*, ${totalQuery}, count(student) as total_students 
+      FROM my_teacher
+      LEFT JOIN student ON (my_teacher.id = student.teacher_id)
+      ${filterQuery}
+      GROUP BY my_teacher.id LIMIT $1 OFFSET $2
+    `
+
+    db.query(query, [limit, offset], function(err, results){
+      if(err) {
+        throw `Database Error! ${err}`;
+      }
+
+      return callback(results.rows);
     })
   }
 }
