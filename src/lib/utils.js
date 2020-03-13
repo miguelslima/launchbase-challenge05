@@ -19,27 +19,34 @@ module.exports = {
     const month = `0${date.getUTCMonth() + 1}`.slice(-2);
     const day = `0${date.getUTCDate()}`.slice(-2);
 
-    return `${year}-${month}-${day}`;
+    return {
+      day,
+      month,
+      year,
+      iso: `${year}-${month}-${day}`,
+      birthDay: `${day}/${month}`,
+      format: `${day}/${month}/${year}`
+    }
   },
-  graduation: function(select) {
-    if (select == "ensinomedio"){
+  graduation: function(graduation) {
+    if (graduation == "ensinomedio"){
       return "Ensino Médio";
     }else if
 
-      (select == "ensinosuperior"){
+      (graduation == "ensinosuperior"){
         return "Superior Completo";
     }else if
 
-      (select == "mestrado"){
+      (graduation == "mestrado"){
         return "Mestrado";
     }else if
 
-      (select == "doutorado"){
+      (graduation == "doutorado"){
         return "Doutorado";
     }
   },
-  tipoaula: function(tipoaula){
-    if (tipoaula == "presencial") {
+  tipoaula: function(class_type){
+    if (class_type == "presencial") {
       return "Presencial";
     }
     return "À distancia"

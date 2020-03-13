@@ -21,7 +21,7 @@ module.exports = {
       name, 
       email,
       birth, 
-      select,  
+      graduation,  
       workload, 
     } = req.body;
 
@@ -34,7 +34,7 @@ module.exports = {
       name, 
       email,
       birth, 
-      select, 
+      graduation, 
       workload
     });
 
@@ -79,7 +79,7 @@ module.exports = {
     const student = {
       ...foundStudent,
       birth: date(foundStudent.birth),
-      yearSchool: yearSchool(foundStudent.select)
+      yearSchool: yearSchool(foundStudent.graduation)
     }
     
     return res.render('students/edit', { student });

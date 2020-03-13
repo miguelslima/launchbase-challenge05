@@ -36,7 +36,7 @@
   <div class="item">
     <div>Grau de Escolaridade</div>
     <div>
-      <select name="select">
+      <select name="graduation">
         <option value="ensinomedio">Ensino Médio Completo</option>
         <option value="ensinosuperior" selected>Ensino Superior Completo</option>
         <option value="mestrado">Mestrado</option>
@@ -52,14 +52,14 @@
     <span>
       <input 
         type="radio" 
-        name="tipoaula" 
-        value="presencial" {% if teacher.tipoaula == 'presencial' %}
+        name="class_type" 
+        value="presencial" {% if teacher.class_type == 'presencial' %}
         {% endif %} checked> Presencial</span>
     <span>
       <input 
         type="radio" 
-        name="tipoaula" 
-        value="distancia" {% if teacher.tipoaula == 'distancia' %}
+        name="class_type" 
+        value="distancia" {% if teacher.class_type == 'distancia' %}
         {% endif %}> À Distância</span>   
   </div>
 </div>
@@ -69,9 +69,9 @@
   <div>
     <input 
       type="text" 
-      name="services" 
+      name="subjects_taught" 
       placeholder="Separe as matérias por vírgula"
-      value="{{teacher.services}}"
+      value="{{teacher.subjects_taught}}"
     >    
   </div>
 </div>

@@ -33,15 +33,15 @@
       <div>Tipo de Aula</div>
       <div>
         <div>
-          <span>{{ teacher.tipoaula }} </span>
+          <span>{{ teacher.class_type }} </span>
         </div>
       </div>
     </div>
 
     <div class="item">
       <div>Área de atuação</div>
-      {% for service in teacher.services %}
-        <span>{{ service }}</span>
+      {% for subject_taught in teacher.subjects_taught %}
+        <span>{{ subject_taught }}</span>
       {%endfor%}
     </div>
 
