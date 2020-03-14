@@ -4,7 +4,7 @@ const db = require('../../config/db');
 module.exports = {
   all(callback) {
     db.query(`
-      SELECT * FROM student`, function(err, results){
+      SELECT * FROM students`, function(err, results){
         if(err) {
           throw `Database Error! ${err}`;
         }
@@ -13,7 +13,7 @@ module.exports = {
   },
   create(data, callback) {
     const query = `
-      INSERT INTO student (
+      INSERT INTO students (
         name,
         avatar_url,
         email,
@@ -34,7 +34,7 @@ module.exports = {
       data.workload,
       date(data.birth).iso,
       date(Date.now()).iso,
-      data.my_teacher
+      data.teachers
     ]
 
     console.log(values)
@@ -49,10 +49,10 @@ module.exports = {
   },
   find(id, callback) {
     db.query(`
-      SELECT student.*, my_teacher.name AS teacher_name
-      FROM student
-      LEFT JOIN my_teacher ON (student.teacher_id = my_teacher.id)
-      WHERE student.id = $1`, [id], function(err, results){
+      SELECT students.*, teachers.name AS teacher_name
+      FROM students
+      LEFT JOIN teachers ON (students.teacher_id = teachers.id)
+      WHERE students.id = $1`, [id], function(err, results){
       
       if(err){
         throw `Database Error! ${err}`;
@@ -63,7 +63,7 @@ module.exports = {
   },
   update(data, callback) {
     const query = `
-      UPDATE student SET
+      UPDATE students SET
         avatar_url=($1),
         name=($2),
         birth=($3),
@@ -79,7 +79,7 @@ module.exports = {
       date(data.birth).iso,
       data.email,
       data.yearSchool,
-      data.my_teacher,
+      data.teachers,
       data.id
     ]
 
@@ -101,7 +101,7 @@ module.exports = {
     })
   },
   teachersSelectOptions(callback) {
-    db.query(`SELECT name, id FROM my_teacher`, function(err, results){
+    db.query(`SELECT name, id FROM teachers`, function(err, results){
       if(err) {
         throw `Database Error! ${err}`;
       }

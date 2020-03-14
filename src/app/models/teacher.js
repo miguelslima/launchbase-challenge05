@@ -4,10 +4,10 @@ const db = require('../../config/db');
 module.exports = {
   all(callback) {
     db.query(
-      `SELECT my_teacher.*, count(student) AS total_students
-      FROM my_teacher
-      LEFT JOIN student ON (my_teacher.id = student.teacher_id)
-      GROUP BY my_teacher.id
+      `SELECT teachers.*, count(student) AS total_students
+      FROM teachers
+      LEFT JOIN student ON (teachers.id = student.teacher_id)
+      GROUP BY teachers.id
       ORDER BY total_students ASC`, function(err, results){
       if(err) {
         throw `Database Error! ${err}`;
@@ -17,7 +17,7 @@ module.exports = {
   },
   create(data, callback) {
     const query = `
-      INSERT INTO my_teacher (
+      INSERT INTO teachers (
         name,
         avatar_url,
         graduation,
@@ -52,7 +52,7 @@ module.exports = {
   find(id, callback) {
     db.query(`
       SELECT * 
-      FROM my_teacher 
+      FROM teachers 
       WHERE id = $1`, [id], function(err, results){
         if(err) {
           throw `Database Error! ${err}`;
@@ -62,12 +62,12 @@ module.exports = {
   },
   findBy(filter, callback) {
     db.query(`
-      SELECT my_teacher.*, count(student) AS total_students
-      FROM my_teacher
-      LEFT JOIN student ON (my_teacher.id = student.teacher_id)
-      WHERE my_teacher.name ILIKE '%${filter}%'
-      OR my_teacher.subjects_taught ILIKE '%${filter}%'
-      GROUP BY my_teacher.id 
+      SELECT teachers.*, count(student) AS total_students
+      FROM teachers
+      LEFT JOIN student ON (teachers.id = student.teacher_id)
+      WHERE teachers.name ILIKE '%${filter}%'
+      OR teachers.subjects_taught ILIKE '%${filter}%'
+      GROUP BY teachers.id 
       ORDER BY total_students ASC`, function(err, results){
         if(err) {
           throw `Database Error! ${err}`;
@@ -77,7 +77,7 @@ module.exports = {
   },
   update(data, callback) {
     const query = `
-      UPDATE my_teacher SET
+      UPDATE teachers SET
         avatar_url=($1),
         name=($2),
         birth=($3),
@@ -106,7 +106,7 @@ module.exports = {
     })
   },
   delete(id, callback) {
-    db.query(`DELETE FROM my_teacher WHERE id = $1`, [id], function(err, results){
+    db.query(`DELETE FROM teachers WHERE id = $1`, [id], function(err, results){
       if(err) {
         throw `Database Error! ${err}`;
       }
@@ -120,28 +120,28 @@ module.exports = {
     let query = "",
         filterQuery = "",
         totalQuery = `(
-          SELECT count(*) FROM my_teacher 
+          SELECT count(*) FROM teachers 
         ) AS total`
 
     
 
     if (filter) { 
       filterQuery = `
-      WHERE my_teacher.name ILIKE '%${filter}%'
-      OR my_teacher.subjects_taught ILIKE '%${filter}%'`
+      WHERE teachers.name ILIKE '%${filter}%'
+      OR teachers.subjects_taught ILIKE '%${filter}%'`
 
       totalQuery = `(
-        SELECT count(*) FROM my_teacher
+        SELECT count(*) FROM teachers
         ${filterQuery}
       ) AS total`
     }
 
     query=`
-    SELECT my_teacher.*, ${totalQuery}, count(student) AS total_students
-    FROM my_teacher
-    LEFT JOIN student ON (my_teacher.id = student.teacher_id)
+    SELECT teachers.*, ${totalQuery}, count(students) AS total_students
+    FROM teachers
+    LEFT JOIN students ON (teachers.id = students.teacher_id)
     ${filterQuery}
-    GROUP BY my_teacher.id LIMIT $1 OFFSET $2`
+    GROUP BY teachers.id LIMIT $1 OFFSET $2`
 
     db.query(query, [limit, offset], function(err, results){
       if(err) {

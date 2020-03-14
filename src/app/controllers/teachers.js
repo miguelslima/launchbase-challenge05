@@ -15,14 +15,14 @@ module.exports = {
       page,
       limit,
       offset,
-      callback(teacher){
+      callback(teachers){
 
         const pagination = {
-          total: Math.ceil(teacher[0].total / limit),
+          total: Math.ceil(teachers[0].total / limit),
           page
       }
 
-        return res.render("teachers/index", { teacher, pagination, filter})
+        return res.render("teachers/index", { teachers, pagination, filter})
       }
     }
 
