@@ -83,6 +83,6 @@ module.exports = {
 
     (yearSchool == "3.medio"){
       return "3º Ano Ensino Médio";
-  }
+    }
   }
 }

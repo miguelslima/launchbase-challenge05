@@ -1,13 +1,30 @@
-const { age, date, yearSchool, graduation} = require('../../lib/utils');
+const { age, date, yearSchool} = require('../../lib/utils');
 const Student = require('../models/Student')
 
 module.exports = {
-  index(req, res) {
+  index(req, res){
+    let {filter, page, limit} = req.query
 
-    Student.all(function(students){
+    page = page || 1
+    limit = limit || 3
 
-      return res.render("students/index", {students});
-    })
+    let offset = limit * (page - 1)
+
+    const params ={
+      filter,
+      page,
+      limit,
+      offset,
+      callback(students){
+
+        const pagination = {
+          total: Math.ceil(students[0].total / limit),
+          page
+        }
+        return res.render('students/index', { students, pagination, filter })
+      }
+    }
+    Student.paginate(params)
   },
   create(req, res) {
     
@@ -20,11 +37,11 @@ module.exports = {
     const keys = Object.keys(req.body);
 
     for (key of keys) {
-      if (req.body[key] == "")
-      return res.send("Please, fill all fields");
+      if (req.body[key] == ""){
+        return res.send("Please, fill all fields");
+      }
     }
     
-
     Student.create(req.body, function(student){
       
       return res.redirect(`/students/${student.id}`); 
@@ -37,7 +54,9 @@ module.exports = {
       }
 
       student.age = age(student.birth);
-      student.yearSchool = yearSchool(student.yearSchool)
+      console.log(yearSchool(Student.yearSchool))
+      student.yearSchool = yearSchool(student.yearSchool);
+      
 
       return res.render("students/show", { student })
     })
@@ -54,6 +73,7 @@ module.exports = {
       
         return res.render('students/edit', { student, teacherOptions: options});
       })
+      console.log(yearSchool.yearSchool)
     })
   },
   put(req, res) {
